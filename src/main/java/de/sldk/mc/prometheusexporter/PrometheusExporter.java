@@ -6,6 +6,7 @@ import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.loader.ConfigurationLoader;
 import org.eclipse.jetty.server.Server;
 import org.slf4j.Logger;
+import org.spongepowered.api.Game;
 import org.spongepowered.api.config.DefaultConfig;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.game.state.GamePreInitializationEvent;
@@ -27,6 +28,9 @@ import static de.sldk.mc.prometheusexporter.PluginInfo.*;
 public class PrometheusExporter {
     @Inject
     Logger logger;
+
+    @Inject
+    private Game game;
 
     private Server server;
     private int port;
@@ -87,5 +91,9 @@ public class PrometheusExporter {
 
     public Logger getLogger() {
         return logger;
+    }
+
+    public Game getGame() {
+        return game;
     }
 }

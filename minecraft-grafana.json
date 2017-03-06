@@ -42,7 +42,7 @@
   "gnetId": null,
   "graphTooltip": 1,
   "hideControls": false,
-  "id": 4,
+  "id": null,
   "links": [],
   "refresh": false,
   "rows": [
@@ -284,7 +284,7 @@
           "decimals": null,
           "format": "bytes",
           "gauge": {
-            "maxValue": 1000000000,
+            "maxValue": 6000000000,
             "minValue": 0,
             "show": true,
             "thresholdLabels": false,
@@ -335,7 +335,7 @@
               "step": 40
             }
           ],
-          "thresholds": "900000000",
+          "thresholds": "5500000000",
           "title": "JVM Memory Used",
           "type": "singlestat",
           "valueFontSize": "80%",
@@ -552,7 +552,7 @@
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
-          "span": 12,
+          "span": 6,
           "stack": false,
           "steppedLine": false,
           "targets": [
@@ -562,13 +562,85 @@
               "legendFormat": "{{world}}_total",
               "metric": "mc_entities_total",
               "refId": "A",
-              "step": 2
+              "step": 4
             }
           ],
           "thresholds": [],
           "timeFrom": null,
           "timeShift": null,
           "title": "Entities",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ]
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "Local",
+          "fill": 1,
+          "id": 10,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 6,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "mc_tile_entities_total{group=\"dw20\"}",
+              "intervalFactor": 2,
+              "legendFormat": "{{world}}_total",
+              "metric": "mc_entities_total",
+              "refId": "A",
+              "step": 4
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Tile Entities",
           "tooltip": {
             "shared": true,
             "sort": 0,

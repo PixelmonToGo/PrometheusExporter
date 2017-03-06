@@ -6,7 +6,6 @@ import io.prometheus.client.Gauge;
 import io.prometheus.client.exporter.common.TextFormat;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
-import org.spongepowered.api.Sponge;
 import org.spongepowered.api.world.World;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,6 +20,7 @@ public class MetricsController extends AbstractHandler {
     private Gauge loadedChunks = Gauge.build().name("mc_loaded_chunks_total").help("Chunks loaded per world").labelNames("world").create().register();
     private Gauge playersOnline = Gauge.build().name("mc_players_online_total").help("Players currently online per world").labelNames("world").create().register();
     private Gauge entities = Gauge.build().name("mc_entities_total").help("Entities loaded per world").labelNames("world").create().register();
+    private Gauge tileEntities = Gauge.build().name("mc_tile_entities_total").help("Entities loaded per world").labelNames("world").create().register();
     private Gauge memory = Gauge.build().name("mc_jvm_memory").help("JVM memory usage").labelNames("type").create().register();
 
     public MetricsController(PrometheusExporter exporter) {
@@ -34,16 +34,17 @@ public class MetricsController extends AbstractHandler {
         }
 
         players.clear();
-        players.labels("online").set(Sponge.getServer().getOnlinePlayers().size());
-        players.labels("max").set(Sponge.getServer().getMaxPlayers());
+        players.labels("online").set(exporter.getGame().getServer().getOnlinePlayers().size());
+        players.labels("max").set(exporter.getGame().getServer().getMaxPlayers());
 
-        for (World world : Sponge.getServer().getWorlds()) {
+        for (World world : exporter.getGame().getServer().getWorlds()) {
             loadedChunks.labels(world.getName()).set(Iterables.size(world.getLoadedChunks()));
             playersOnline.labels(world.getName()).set(world.getPlayers().size());
             entities.labels(world.getName()).set(world.getEntities().size());
+            tileEntities.labels(world.getName()).set(world.getTileEntities().size());
         }
 
-        tps.labels("tps").set(Sponge.getServer().getTicksPerSecond());
+        tps.labels("tps").set(exporter.getGame().getServer().getTicksPerSecond());
         memory.labels("max").set(Runtime.getRuntime().maxMemory());
         memory.labels("free").set(Runtime.getRuntime().freeMemory());
 
