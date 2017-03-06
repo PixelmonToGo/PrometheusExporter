@@ -33,7 +33,6 @@ public class MetricsController extends AbstractHandler {
             return;
         }
 
-        players.clear();
         players.labels("online").set(exporter.getGame().getServer().getOnlinePlayers().size());
         players.labels("max").set(exporter.getGame().getServer().getMaxPlayers());
 
