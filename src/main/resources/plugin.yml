@@ -1,5 +1,0 @@
-name: PrometheusExporter
-version: 1.0.1
-author: sldk
-main: de.sldk.mc.PrometheusExporter
-website: sldk.de

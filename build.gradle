@@ -1,0 +1,67 @@
+plugins {
+    id 'java'
+    id 'idea'
+    id 'ninja.miserable.blossom' version '1.0.1'
+    id 'com.github.johnrengelman.shadow' version '1.2.4'
+    id 'org.spongepowered.plugin' version '0.6'
+}
+
+group = 'de.sldk.mc.prometheusexporter'
+version = '1.0.1'
+description = "Sponge Minecraft Prometheus Exporter"
+ext.url = 'https://github.com/Stonebound/minecraft-prometheus-exporter'
+
+compileJava {
+    sourceCompatibility = '1.8'
+    targetCompatibility = '1.8'
+}
+
+repositories {
+    jcenter()
+    mavenCentral()
+    maven {
+        name = 'sponge'
+        url = 'http://repo.spongepowered.org/maven'
+    }
+}
+
+configurations {
+    compile.extendsFrom shadow
+}
+
+dependencies {
+    compile ("org.spongepowered:spongeapi:5.1.0")
+    shadow ("io.prometheus:simpleclient_common:0.0.21")
+    shadow ("org.eclipse.jetty:jetty-server:9.4.2.v20170220")
+}
+
+shadowJar {
+    configurations = [project.configurations.shadow]
+    dependencies {
+        include dependency('io.prometheus:simpleclient_common:0.0.21')
+        include dependency('io.prometheus:simpleclient:0.0.21')
+        include dependency('org.eclipse.jetty:jetty-server:9.4.2.v20170220')
+        include dependency('org.eclipse.jetty:jetty-http:9.4.2.v20170220')
+        include dependency('org.eclipse.jetty:jetty-io:9.4.2.v20170220')
+        include dependency('org.eclipse.jetty:jetty-util:9.4.2.v20170220')
+        include dependency('javax.servlet:javax.servlet-api:3.1.0')
+    }
+    relocate 'org.eclipse.jetty.jetty-server', 'de.sldk.mc.relocate.jetty-server'
+    relocate 'org.eclipse.jetty.jetty-http', 'de.sldk.mc.relocate.jetty-http'
+    relocate 'org.eclipse.jetty.jetty-io', 'de.sldk.mc.relocate.jetty-io'
+    relocate 'org.eclipse.jetty.jetty-util', 'de.sldk.mc.relocate.jetty-util'
+    relocate 'javax.servlet.javax.servlet-api', 'de.sldk.mc.relocate.servlet-api'
+
+    archiveName = "spongeprometheusexporter-${version}-plugin.jar"
+}
+
+blossom {
+    def location = 'src/main/java/de/sldk/mc/prometheusexporter/PluginInfo.java'
+
+    replaceToken '@name@', project.name, location
+    replaceToken '@version@', version, location
+    replaceToken '@description@', project.description, location
+    replaceToken '@url@', project.url, location
+}
+
+build.dependsOn(shadowJar)
