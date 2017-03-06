@@ -17,7 +17,7 @@ public class MetricsController extends AbstractHandler {
     private final PrometheusExporter exporter;
 
     private Gauge players = Gauge.build().name("mc_players_total").help("Online and offline players").labelNames("state").create().register();
-    private Gauge tps = Gauge.build().name("TPS").help("Tickrate").labelNames("state").create().register();
+    private Gauge tps = Gauge.build().name("mc_tps").help("Tickrate").labelNames("state").create().register();
     private Gauge loadedChunks = Gauge.build().name("mc_loaded_chunks_total").help("Chunks loaded per world").labelNames("world").create().register();
     private Gauge playersOnline = Gauge.build().name("mc_players_online_total").help("Players currently online per world").labelNames("world").create().register();
     private Gauge entities = Gauge.build().name("mc_entities_total").help("Entities loaded per world").labelNames("world").create().register();
