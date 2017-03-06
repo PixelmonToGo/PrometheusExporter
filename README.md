@@ -56,4 +56,5 @@ mc_tps | Overall tps
 mc_loaded_chunks_total | Chunks loaded per world
 mc_players_online_total | Online players per world
 mc_entities_total | Entities loaded per world
+mc_tile_entities_total | Tile Entities loaded per world
 mc_jvm_memory | JVM memory usage
