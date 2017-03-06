@@ -38,7 +38,7 @@ public class MetricsController extends AbstractHandler {
         players.labels("max").set(Sponge.getServer().getMaxPlayers());
 
         for (World world : Sponge.getServer().getWorlds()) {
-            loadedChunks.labels(String.valueOf(Iterables.size(world.getLoadedChunks())));
+            loadedChunks.labels(world.getName()).set(Iterables.size(world.getLoadedChunks()));
             playersOnline.labels(world.getName()).set(world.getPlayers().size());
             entities.labels(world.getName()).set(world.getEntities().size());
         }
