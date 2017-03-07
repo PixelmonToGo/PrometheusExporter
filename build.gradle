@@ -1,13 +1,14 @@
 plugins {
     id 'java'
     id 'idea'
+    id 'signing'
     id 'ninja.miserable.blossom' version '1.0.1'
     id 'com.github.johnrengelman.shadow' version '1.2.4'
     id 'org.spongepowered.plugin' version '0.6'
 }
 
 group = 'de.sldk.mc.prometheusexporter'
-version = '1.0.3-pre1'
+version = '1.0.3'
 description = "Sponge Minecraft Prometheus Exporter"
 ext.url = 'https://github.com/Stonebound/minecraft-prometheus-exporter'
 
@@ -65,3 +66,10 @@ blossom {
 }
 
 build.dependsOn(shadowJar)
+
+signing {
+    if (project.hasProperty('signing.keyId') && project.hasProperty('signing.password') && project.hasProperty('signing.secretKeyRingFile')) {
+        sign configurations.archives
+        sign configurations.shadow
+    }
+}
