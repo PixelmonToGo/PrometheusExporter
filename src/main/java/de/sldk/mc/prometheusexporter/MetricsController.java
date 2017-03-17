@@ -46,6 +46,7 @@ public class MetricsController extends AbstractHandler {
         tps.labels("tps").set(exporter.getGame().getServer().getTicksPerSecond());
         memory.labels("max").set(Runtime.getRuntime().maxMemory());
         memory.labels("free").set(Runtime.getRuntime().freeMemory());
+        memory.labels("used").set(Runtime.getRuntime().maxMemory() - Runtime.getRuntime().freeMemory());
 
         try {
             response.setStatus(HttpServletResponse.SC_OK);

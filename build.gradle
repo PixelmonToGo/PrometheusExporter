@@ -8,7 +8,7 @@ plugins {
 }
 
 group = 'de.sldk.mc.prometheusexporter'
-version = '1.0.3'
+version = '1.0.4'
 description = "Sponge Minecraft Prometheus Exporter"
 ext.url = 'https://github.com/Stonebound/minecraft-prometheus-exporter'
 
