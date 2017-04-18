@@ -6,7 +6,6 @@ import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.loader.ConfigurationLoader;
 import org.eclipse.jetty.server.Server;
 import org.slf4j.Logger;
-import org.spongepowered.api.Game;
 import org.spongepowered.api.config.DefaultConfig;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.game.state.GamePreInitializationEvent;
@@ -27,11 +26,6 @@ import static de.sldk.mc.prometheusexporter.PluginInfo.*;
 
 public class PrometheusExporter {
     @Inject
-    Logger logger;
-
-    @Inject
-    private Game game;
-
     private Server server;
     private int port;
 
@@ -42,6 +36,17 @@ public class PrometheusExporter {
     @DefaultConfig(sharedRoot = false)
     private ConfigurationLoader<CommentedConfigurationNode> cfgMgr;
     private ConfigurationNode cfg;
+
+    private static PrometheusExporter instance;
+    public static PrometheusExporter getInstance() {
+        return PrometheusExporter.instance;
+    }
+
+    @Inject
+    private Logger logger;
+    public Logger getLogger() {
+        return this.logger;
+    }
 
     @Listener
     public void onPreinit(GamePreInitializationEvent event) {
@@ -64,22 +69,22 @@ public class PrometheusExporter {
 
     @Listener
     public void onServerStarted(GameStartedServerEvent event) {
-        server = new Server(port);
-
-        server.setHandler(new MetricsController(this));
-
+        org.eclipse.jetty.util.log.Log.setLog(new JettyNullLogger());
         try {
+            server = new Server(port);
+
+            server.setHandler(new MetricsController(this));
             server.start();
 
             getLogger().info("Started Prometheus metrics endpoint on port " + port);
 
         } catch (Exception e) {
-            getLogger().error("Could not start embedded Jetty server");
+            getLogger().error("Could not start embedded Jetty server", e);
         }
     }
 
     @Listener
-    public void onGameStopping(GameStoppingServerEvent event) {
+    public void onServerStop(GameStoppingServerEvent event) {
         if (server != null) {
             try {
                 server.stop();
@@ -87,13 +92,5 @@ public class PrometheusExporter {
                 e.printStackTrace();
             }
         }
-    }
-
-    public Logger getLogger() {
-        return logger;
-    }
-
-    public Game getGame() {
-        return game;
     }
 }

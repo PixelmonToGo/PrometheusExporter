@@ -1,8 +1,8 @@
 {
   "__inputs": [
     {
-      "name": "DS_HOST",
-      "label": "prometheus",
+      "name": "DS_LOCAL",
+      "label": "Local",
       "description": "",
       "type": "datasource",
       "pluginId": "prometheus",
@@ -43,7 +43,16 @@
   "graphTooltip": 1,
   "hideControls": false,
   "id": null,
-  "links": [],
+  "links": [
+    {
+      "asDropdown": false,
+      "icon": "external link",
+      "tags": [
+        "server"
+      ],
+      "type": "dashboards"
+    }
+  ],
   "refresh": false,
   "rows": [
     {
@@ -53,7 +62,7 @@
         {
           "aliasColors": {},
           "bars": false,
-          "datasource": "${DS_HOST}",
+          "datasource": "${DS_LOCAL}",
           "fill": 1,
           "id": 1,
           "legend": {
@@ -84,7 +93,7 @@
               "legendFormat": "{{state}}",
               "metric": "mc_players_total",
               "refId": "A",
-              "step": 4
+              "step": 240
             }
           ],
           "thresholds": [],
@@ -131,7 +140,7 @@
             "rgba(237, 129, 40, 0.89)",
             "rgba(50, 172, 45, 0.97)"
           ],
-          "datasource": "${DS_HOST}",
+          "datasource": "${DS_LOCAL}",
           "format": "none",
           "gauge": {
             "maxValue": 100,
@@ -183,7 +192,7 @@
               "legendFormat": "",
               "metric": "mc_players_total",
               "refId": "A",
-              "step": 40
+              "step": 1800
             }
           ],
           "thresholds": "0,1",
@@ -202,7 +211,7 @@
         {
           "aliasColors": {},
           "bars": false,
-          "datasource": "${DS_HOST}",
+          "datasource": "${DS_LOCAL}",
           "fill": 1,
           "id": 7,
           "legend": {
@@ -228,12 +237,19 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "mc_jvm_memory",
+              "expr": "mc_jvm_memory{type=\"max\"}",
               "intervalFactor": 2,
               "legendFormat": "mem{{type}}",
               "metric": "mc_jvm_memory",
               "refId": "A",
-              "step": 4
+              "step": 240
+            },
+            {
+              "expr": "mc_jvm_memory{type=\"used\"}",
+              "intervalFactor": 2,
+              "legendFormat": "mem{{type}}",
+              "refId": "B",
+              "step": 240
             }
           ],
           "thresholds": [],
@@ -276,11 +292,11 @@
           "colorBackground": false,
           "colorValue": false,
           "colors": [
-            "rgba(50, 172, 45, 0.97)",
+            "rgba(245, 54, 54, 0.9)",
             "rgba(237, 129, 40, 0.89)",
-            "rgba(245, 54, 54, 0.9)"
+            "rgba(50, 172, 45, 0.97)"
           ],
-          "datasource": "${DS_HOST}",
+          "datasource": "${DS_LOCAL}",
           "decimals": null,
           "format": "bytes",
           "gauge": {
@@ -332,11 +348,11 @@
               "legendFormat": "",
               "metric": "mc_jvm_memory",
               "refId": "A",
-              "step": 40
+              "step": 1800
             }
           ],
-          "thresholds": "5500000000",
-          "title": "JVM Memory Used",
+          "thresholds": "500000000",
+          "title": "JVM Memory Free",
           "type": "singlestat",
           "valueFontSize": "80%",
           "valueMaps": [
@@ -361,9 +377,51 @@
       "height": 250,
       "panels": [
         {
+          "alert": {
+            "conditions": [
+              {
+                "evaluator": {
+                  "params": [
+                    10
+                  ],
+                  "type": "lt"
+                },
+                "operator": {
+                  "type": "and"
+                },
+                "query": {
+                  "datasourceId": 2,
+                  "model": {
+                    "expr": "mc_tps{state=\"tps\"}",
+                    "intervalFactor": 2,
+                    "legendFormat": "tps",
+                    "metric": "mc_tps",
+                    "refId": "A",
+                    "step": 40
+                  },
+                  "params": [
+                    "A",
+                    "5m",
+                    "now"
+                  ]
+                },
+                "reducer": {
+                  "params": [],
+                  "type": "avg"
+                },
+                "type": "query"
+              }
+            ],
+            "executionErrorState": "alerting",
+            "frequency": "60s",
+            "handler": 1,
+            "name": "TPS alert Beyond",
+            "noDataState": "no_data",
+            "notifications": []
+          },
           "aliasColors": {},
           "bars": false,
-          "datasource": "${DS_HOST}",
+          "datasource": "${DS_LOCAL}",
           "fill": 1,
           "id": 9,
           "legend": {
@@ -389,15 +447,23 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "mc_tps{state=\"tps\"",
+              "expr": "mc_tps{state=\"tps\"}",
               "intervalFactor": 2,
               "legendFormat": "tps",
               "metric": "mc_tps",
               "refId": "A",
-              "step": 2
+              "step": 120
             }
           ],
-          "thresholds": [],
+          "thresholds": [
+            {
+              "colorMode": "critical",
+              "fill": true,
+              "line": true,
+              "op": "lt",
+              "value": 10
+            }
+          ],
           "timeFrom": null,
           "timeShift": null,
           "title": "TPS",
@@ -447,7 +513,7 @@
         {
           "aliasColors": {},
           "bars": false,
-          "datasource": "${DS_HOST}",
+          "datasource": "${DS_LOCAL}",
           "fill": 1,
           "id": 3,
           "legend": {
@@ -473,12 +539,12 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "mc_loaded_chunks_total",
+              "expr": "mc_loaded_chunks",
               "intervalFactor": 2,
               "legendFormat": "{{world}}",
               "metric": "mc_loaded_chunks_total",
               "refId": "A",
-              "step": 2
+              "step": 120
             }
           ],
           "thresholds": [],
@@ -531,9 +597,9 @@
         {
           "aliasColors": {},
           "bars": false,
-          "datasource": "${DS_HOST}",
+          "datasource": "${DS_LOCAL}",
           "fill": 1,
-          "id": null,
+          "id": 4,
           "legend": {
             "avg": false,
             "current": false,
@@ -557,12 +623,12 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "mc_entities_total",
+              "expr": "mc_entities",
               "intervalFactor": 2,
               "legendFormat": "{{world}}_total",
               "metric": "mc_entities_total",
               "refId": "A",
-              "step": 4
+              "step": 240
             }
           ],
           "thresholds": [],
@@ -603,7 +669,7 @@
         {
           "aliasColors": {},
           "bars": false,
-          "datasource": "Local",
+          "datasource": "${DS_LOCAL}",
           "fill": 1,
           "id": 10,
           "legend": {
@@ -629,12 +695,12 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "mc_tile_entities_total{group=\"dw20\"}",
+              "expr": "mc_tile_entities",
               "intervalFactor": 2,
               "legendFormat": "{{world}}_total",
               "metric": "mc_entities_total",
               "refId": "A",
-              "step": 4
+              "step": 240
             }
           ],
           "thresholds": [],
@@ -690,7 +756,7 @@
     "list": []
   },
   "time": {
-    "from": "now-30m",
+    "from": "now-24h",
     "to": "now"
   },
   "timepicker": {
@@ -719,6 +785,6 @@
     ]
   },
   "timezone": "browser",
-  "title": "Minecraft",
-  "version": 6
+  "title": "Minecraft Server",
+  "version": 14
 }
