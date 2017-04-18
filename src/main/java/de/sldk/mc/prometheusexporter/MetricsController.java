@@ -57,8 +57,7 @@ public class MetricsController extends AbstractHandler {
 
             baseRequest.setHandled(true);
         } catch (IOException e) {
-            exporter.getLogger().error("Failed to read server statistics");
-            e.printStackTrace();
+            exporter.getLogger().error("Failed to read server statistics", e);
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }

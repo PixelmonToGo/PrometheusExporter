@@ -32,20 +32,21 @@ public class PrometheusExporter {
     @Inject
     @DefaultConfig(sharedRoot = false)
     private File config;
+
     @Inject
     @DefaultConfig(sharedRoot = false)
     private ConfigurationLoader<CommentedConfigurationNode> cfgMgr;
     private ConfigurationNode cfg;
 
-    private static PrometheusExporter instance;
-    public static PrometheusExporter getInstance() {
-        return PrometheusExporter.instance;
-    }
-
     @Inject
     private Logger logger;
     public Logger getLogger() {
         return this.logger;
+    }
+
+    private static PrometheusExporter instance;
+    public static PrometheusExporter getInstance() {
+        return PrometheusExporter.instance;
     }
 
     @Listener
@@ -69,17 +70,16 @@ public class PrometheusExporter {
 
     @Listener
     public void onServerStarted(GameStartedServerEvent event) {
-        org.eclipse.jetty.util.log.Log.setLog(new JettyNullLogger());
         try {
             server = new Server(port);
 
             server.setHandler(new MetricsController(this));
             server.start();
 
-            getLogger().info("Started Prometheus metrics endpoint on port " + port);
+            logger.info("Started Prometheus metrics endpoint on port " + port);
 
         } catch (Exception e) {
-            getLogger().error("Could not start embedded Jetty server", e);
+            logger.error("Could not start embedded Jetty server", e);
         }
     }
 
