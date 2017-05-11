@@ -1,6 +1,6 @@
-# Minecraft Prometheus Exporter
+# Prometheus Exporter for Sponge
 
-A **Sponge plugin** which exports Minecraft server stats for Prometheus.
+A **Sponge plugin** which exports Minecraft server statistics for Prometheus.
 
 ## Quick Start
 
@@ -53,8 +53,8 @@ Label | Description
 ------------ | -------------
 mc_players_total | Online and Max Online players
 mc_tps | Overall tps
-mc_loaded_chunks_total | Chunks loaded per world
-mc_players_online_total | Online players per world
-mc_entities_total | Entities loaded per world
-mc_tile_entities_total | Tile Entities loaded per world
+mc_loaded_chunks | Chunks loaded per world
+mc_players_online | Online players per world
+mc_entities | Entities loaded per world
+mc_tile_entities | Tile Entities loaded per world
 mc_jvm_memory | JVM memory usage
