@@ -1,4 +1,4 @@
-package de.sldk.mc.prometheusexporter;
+package org.stonebound.prometheusexporter;
 
 import org.eclipse.jetty.util.log.Logger;
 

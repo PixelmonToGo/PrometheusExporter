@@ -1,9 +1,10 @@
-package de.sldk.mc.prometheusexporter;
+package org.stonebound.prometheusexporter;
 
 import com.google.common.collect.Iterables;
 import io.prometheus.client.CollectorRegistry;
 import io.prometheus.client.Gauge;
 import io.prometheus.client.exporter.common.TextFormat;
+import net.minecraft.server.MinecraftServer;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
 import org.spongepowered.api.Sponge;
@@ -43,8 +44,10 @@ public class MetricsController extends AbstractHandler {
             entities.labels(world.getName()).set(world.getEntities().size());
             tileEntities.labels(world.getName()).set(world.getTileEntities().size());
         }
+        double meanTickTime = MetricsController.mean(((MinecraftServer) Sponge.getServer()).tickTimeArray) * 1.0E-6D;
 
         tps.labels("tps").set(Sponge.getGame().getServer().getTicksPerSecond());
+        tps.labels("meanticktime").set(meanTickTime);
         memory.labels("max").set(Runtime.getRuntime().maxMemory());
         memory.labels("free").set(Runtime.getRuntime().freeMemory());
         memory.labels("used").set(Runtime.getRuntime().maxMemory() - Runtime.getRuntime().freeMemory());
@@ -60,5 +63,16 @@ public class MetricsController extends AbstractHandler {
             exporter.getLogger().error("Failed to read server statistics", e);
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
+    }
+
+    private static long mean(long[] values)
+    {
+        long sum = 0l;
+        for (long v : values)
+        {
+            sum+=v;
+        }
+
+        return sum / values.length;
     }
 }

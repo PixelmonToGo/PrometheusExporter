@@ -1,4 +1,4 @@
-package de.sldk.mc.prometheusexporter;
+package org.stonebound.prometheusexporter;
 
 public class PluginInfo {
     private PluginInfo() {}
@@ -7,6 +7,6 @@ public class PluginInfo {
     public static final String NAME = "@name@";
     public static final String VERSION = "@version@";
     public static final String DESCRIPTION = "@description@";
-    public static final String URL = "@url@";
+    public static final String URL = "https://github.com/Stonebound/minecraft-prometheus-exporter";
     public static final String AUTHORS = "sladkoff, phit";
 }

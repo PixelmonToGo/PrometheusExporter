@@ -1,4 +1,4 @@
-package de.sldk.mc.prometheusexporter;
+package org.stonebound.prometheusexporter;
 
 import com.google.inject.Inject;
 import ninja.leaping.configurate.ConfigurationNode;
@@ -15,13 +15,11 @@ import org.spongepowered.api.plugin.Plugin;
 
 import java.io.File;
 
-import static de.sldk.mc.prometheusexporter.PluginInfo.*;
-
-@Plugin(id = ID,
-        name = NAME,
-        version = VERSION,
-        description = DESCRIPTION,
-        url = URL
+@Plugin(id = PluginInfo.ID,
+        name = PluginInfo.NAME,
+        version = PluginInfo.VERSION,
+        description = PluginInfo.DESCRIPTION,
+        url = PluginInfo.URL
 )
 
 public class PrometheusExporter {
