@@ -15,11 +15,12 @@ import org.spongepowered.api.plugin.Plugin;
 
 import java.io.File;
 
-@Plugin(id = PluginInfo.ID,
-        name = PluginInfo.NAME,
-        version = PluginInfo.VERSION,
-        description = PluginInfo.DESCRIPTION,
-        url = PluginInfo.URL
+@Plugin(id = "spongeprometheusexporter",
+        name = "SpongePrometheusExporter",
+        version = "1.3.0",
+        description = "Prometheus Exporter for Sponge",
+        url = "https://ore.spongepowered.org/phit/PrometheusExporter",
+        authors = "phit"
 )
 
 public class PrometheusExporter {
