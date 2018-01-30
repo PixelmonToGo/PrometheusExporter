@@ -41,7 +41,7 @@ compileJava {
 defaultTasks 'build', 'shadowJar'
 
 dependencies {
-    compile 'org.spongepowered:spongeapi:7.0.0-SNAPSHOT'
+    compile 'org.spongepowered:spongeapi:7.0.0'
     compile 'io.prometheus:simpleclient_common:0.0.26'
     compile 'org.eclipse.jetty:jetty-server:9.4.6.v20170531'
     compile 'javax.servlet:javax.servlet-api:4.0.0'
@@ -72,10 +72,10 @@ reobf {
     shadowJar{}
 }
 
-tasks.build.dependsOn reobfShadowJar
-
 signing {
     if (project.hasProperty('signing.keyId') && project.hasProperty('signing.password') && project.hasProperty('signing.secretKeyRingFile')) {
         sign configurations.shadow
     }
 }
+
+tasks.signShadow.dependsOn retromapReplacedMain

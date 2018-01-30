@@ -17,7 +17,7 @@ import java.io.File;
 
 @Plugin(id = "spongeprometheusexporter",
         name = "SpongePrometheusExporter",
-        version = "1.3.0",
+        version = "1.3.1",
         description = "Prometheus Exporter for Sponge",
         url = "https://ore.spongepowered.org/phit/PrometheusExporter",
         authors = "phit"
@@ -41,11 +41,6 @@ public class PrometheusExporter {
     private Logger logger;
     public Logger getLogger() {
         return this.logger;
-    }
-
-    private static PrometheusExporter instance;
-    public static PrometheusExporter getInstance() {
-        return PrometheusExporter.instance;
     }
 
     @Listener
