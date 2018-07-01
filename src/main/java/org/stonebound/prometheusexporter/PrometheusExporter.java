@@ -17,7 +17,7 @@ import java.io.File;
 
 @Plugin(id = "spongeprometheusexporter",
         name = "SpongePrometheusExporter",
-        version = "1.3.1",
+        version = "1.3.2",
         description = "Prometheus Exporter for Sponge",
         url = "https://ore.spongepowered.org/phit/PrometheusExporter",
         authors = "phit"

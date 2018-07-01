@@ -30,7 +30,7 @@ minecraft {
 }
 
 group = 'org.stonebound.prometheusexporter'
-version = '1.3.1'
+version = '1.3.2'
 description = "Prometheus Exporter for Sponge"
 
 compileJava {
