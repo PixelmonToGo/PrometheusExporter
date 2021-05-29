@@ -13,6 +13,8 @@ public class PrometheusExporterConfig {
 
     public static final PluginConfig<String> HOST = new PluginConfig<>("host", "localhost", ConfigurationNode::getString);
     public static final PluginConfig<Integer> PORT = new PluginConfig<>("port", 9225, ConfigurationNode::getInt);
+    public static final PluginConfig<Boolean> IGNORE_OFFLINE = new PluginConfig<>("ignore_offline", false, ConfigurationNode::getBoolean);
+
     public static final List<MetricConfig> METRICS = Arrays.asList(
             metricConfig("entities_total", true, Entities::new),
             metricConfig("loaded_chunks_total", true, LoadedChunks::new),
@@ -47,6 +49,7 @@ public class PrometheusExporterConfig {
 
         PrometheusExporterConfig.HOST.setDefault(configFile);
         PrometheusExporterConfig.PORT.setDefault(configFile);
+        PrometheusExporterConfig.IGNORE_OFFLINE.setDefault(configFile);
         PrometheusExporterConfig.METRICS.forEach(metric -> metric.setDefault(configFile));
 
         prometheusExporter.saveConfig();
