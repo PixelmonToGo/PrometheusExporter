@@ -7,8 +7,8 @@ buildscript {
             url = 'http://repo.spongepowered.org/maven'
         }
         maven {
-            name = 'forge'
-            url = 'http://files.minecraftforge.net/maven'
+            name = "forge"
+            url = "https://maven.minecraftforge.net"
         }
     }
 
@@ -17,16 +17,20 @@ buildscript {
     }
 }
 
+
+
 plugins {
     id 'signing'
     id 'com.github.johnrengelman.shadow' version '1.2.4'
     id 'org.spongepowered.plugin' version '0.8.1'
-    id 'net.minecrell.vanillagradle.server' version '2.2-6'
 }
+
+apply plugin: 'net.minecraftforge.gradle.forge'
 
 minecraft {
     mappings = 'snapshot_20171007'
-    version = '1.12.2'
+    runDir = "run"
+    version = "1.12.2-14.23.5.2838"
 }
 
 group = 'org.stonebound.prometheusexporter'
@@ -78,4 +82,4 @@ signing {
     }
 }
 
-tasks.signShadow.dependsOn retromapReplacedMain
+//tasks.signShadow.dependsOn retromapReplacedMain

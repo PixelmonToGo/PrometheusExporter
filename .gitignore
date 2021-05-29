@@ -5,3 +5,7 @@
 .classpath
 .project
 .vscode
+/.gradle/
+/build/
+/run/
+
