@@ -1,8 +1,11 @@
 package de.sldk.mc.metrics;
 
+import de.sldk.mc.PrometheusExporter;
 import io.prometheus.client.Gauge;
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.Plugin;
+import org.spongepowered.api.Sponge;
+import org.spongepowered.api.service.user.UserStorageService;
+
+import java.util.Collection;
 
 public class PlayersTotal extends Metric {
 
@@ -11,12 +14,16 @@ public class PlayersTotal extends Metric {
             .help("Unique players (online + offline)")
             .create();
 
-    public PlayersTotal(Plugin plugin) {
+    public PlayersTotal(PrometheusExporter plugin) {
         super(plugin, PLAYERS);
     }
 
     @Override
     public void doCollect() {
-        PLAYERS.set(Bukkit.getOfflinePlayers().length);
+        PLAYERS.set(Sponge.getServiceManager().provide(UserStorageService.class)
+                .map(UserStorageService::getAll)
+                .map(Collection::size)
+                .orElse(0)
+        );
     }
 }

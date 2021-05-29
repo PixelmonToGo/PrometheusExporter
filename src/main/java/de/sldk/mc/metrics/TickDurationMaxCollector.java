@@ -1,7 +1,6 @@
 package de.sldk.mc.metrics;
 
-import org.bukkit.plugin.Plugin;
-
+import de.sldk.mc.PrometheusExporter;
 import io.prometheus.client.Gauge;
 
 public class TickDurationMaxCollector extends TickDurationCollector {
@@ -12,7 +11,7 @@ public class TickDurationMaxCollector extends TickDurationCollector {
             .help("Max duration of server tick (nanoseconds)")
             .create();
 
-    public TickDurationMaxCollector(Plugin plugin) {
+    public TickDurationMaxCollector(PrometheusExporter plugin) {
         super(plugin, TD, NAME);
     }
 

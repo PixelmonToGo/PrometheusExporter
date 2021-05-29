@@ -1,7 +1,6 @@
 package de.sldk.mc.metrics;
 
-import org.bukkit.plugin.Plugin;
-
+import de.sldk.mc.PrometheusExporter;
 import io.prometheus.client.Gauge;
 
 public class TickDurationAverageCollector extends TickDurationCollector {
@@ -12,7 +11,7 @@ public class TickDurationAverageCollector extends TickDurationCollector {
             .help("Average duration of server tick (nanoseconds)")
             .create();
 
-    public TickDurationAverageCollector(Plugin plugin) {
+    public TickDurationAverageCollector(PrometheusExporter plugin) {
         super(plugin, TD, NAME);
     }
 

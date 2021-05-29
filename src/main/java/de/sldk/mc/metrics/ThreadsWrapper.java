@@ -1,19 +1,19 @@
 package de.sldk.mc.metrics;
 
-import java.util.List;
-
-import org.bukkit.plugin.Plugin;
-
+import de.sldk.mc.PrometheusExporter;
 import io.prometheus.client.Collector;
 import io.prometheus.client.hotspot.ThreadExports;
 
+import java.util.List;
+
 public class ThreadsWrapper extends Metric {
-    public ThreadsWrapper(Plugin plugin) {
+    public ThreadsWrapper(PrometheusExporter plugin) {
         super(plugin, new ThreadExportsCollector());
     }
 
     @Override
-    protected void doCollect() {}
+    protected void doCollect() {
+    }
 
     private static class ThreadExportsCollector extends Collector {
         private static final ThreadExports threadExports = new ThreadExports();

@@ -1,7 +1,6 @@
 package de.sldk.mc.metrics;
 
-import org.bukkit.plugin.Plugin;
-
+import de.sldk.mc.PrometheusExporter;
 import io.prometheus.client.Gauge;
 
 public class TickDurationMinCollector extends TickDurationCollector {
@@ -12,7 +11,7 @@ public class TickDurationMinCollector extends TickDurationCollector {
             .help("Min duration of server tick (nanoseconds)")
             .create();
 
-    public TickDurationMinCollector(Plugin plugin) {
+    public TickDurationMinCollector(PrometheusExporter plugin) {
         super(plugin, TD, NAME);
     }
 

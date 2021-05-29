@@ -1,19 +1,17 @@
 package de.sldk.mc.metrics;
 
+import de.sldk.mc.PrometheusExporter;
 import io.prometheus.client.Gauge;
-import org.bukkit.World;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.plugin.Plugin;
+import org.spongepowered.api.entity.Entity;
+import org.spongepowered.api.entity.EntityType;
+import org.spongepowered.api.world.World;
 
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static java.util.Collections.singletonMap;
-
 /**
  * Get current count of all entities.
- *
+ * <p>
  * Entities are labelled by
  * <ol>
  *     <li> world,
@@ -27,15 +25,10 @@ public class Entities extends WorldMetric {
     private static final Gauge ENTITIES = Gauge.build()
             .name(prefix("entities_total"))
             .help("Entities loaded per world")
-            .labelNames("world", "type", "alive", "spawnable")
+            .labelNames("world", "type")
             .create();
 
-    /**
-     * Override the value returned by {@link EntityType#isAlive()}.
-     */
-    private static final Map<EntityType, Boolean> ALIVE_OVERRIDE = singletonMap(EntityType.ARMOR_STAND, false);
-
-    public Entities(Plugin plugin) {
+    public Entities(PrometheusExporter plugin) {
         super(plugin, ENTITIES);
     }
 
@@ -52,15 +45,9 @@ public class Entities extends WorldMetric {
         mapEntityTypesToCounts
                 .forEach((entityType, count) ->
                         ENTITIES
-                                .labels(world.getName(),
-                                        getEntityName(entityType),
-                                        Boolean.toString(isEntityTypeAlive(entityType)),
-                                        Boolean.toString(entityType.isSpawnable()))
+                                .labels(world.getDimension().getType().getId(),
+                                        getEntityName(entityType))
                                 .set(count)
                 );
-    }
-
-    private boolean isEntityTypeAlive(EntityType type) {
-        return ALIVE_OVERRIDE.containsKey(type) ? ALIVE_OVERRIDE.get(type) : type.isAlive();
     }
 }

@@ -1,7 +1,7 @@
 package de.sldk.mc.metrics;
 
+import de.sldk.mc.PrometheusExporter;
 import io.prometheus.client.Gauge;
-import org.bukkit.plugin.Plugin;
 
 public class Memory extends Metric {
 
@@ -11,7 +11,7 @@ public class Memory extends Metric {
             .labelNames("type")
             .create();
 
-    public Memory(Plugin plugin) {
+    public Memory(PrometheusExporter plugin) {
         super(plugin, MEMORY);
     }
 

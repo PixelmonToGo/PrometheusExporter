@@ -1,9 +1,9 @@
 package de.sldk.mc.metrics;
 
+import de.sldk.mc.PrometheusExporter;
 import de.sldk.mc.tps.TpsCollector;
 import io.prometheus.client.Gauge;
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.Plugin;
+import org.spongepowered.api.scheduler.Task;
 
 public class Tps extends Metric {
 
@@ -12,30 +12,31 @@ public class Tps extends Metric {
             .help("Server TPS (ticks per second)")
             .create();
 
-    private int taskId;
+    private Task task;
 
-    private TpsCollector tpsCollector = new TpsCollector();
+    private final TpsCollector tpsCollector = new TpsCollector();
 
-    public Tps(Plugin plugin) {
+    public Tps(PrometheusExporter plugin) {
         super(plugin, TPS);
     }
 
     @Override
     public void enable() {
         super.enable();
-        this.taskId = startTask(getPlugin());
+        this.task = startTask(getPlugin());
     }
 
     @Override
     public void disable() {
         super.disable();
-        Bukkit.getScheduler().cancelTask(taskId);
+        task.cancel();
     }
 
-    private int startTask(Plugin plugin) {
-        return Bukkit.getServer()
-                .getScheduler()
-                .scheduleSyncRepeatingTask(plugin, tpsCollector, 0, TpsCollector.POLL_INTERVAL);
+    private Task startTask(PrometheusExporter plugin) {
+        return Task.builder()
+                .execute(this::doCollect)
+                .intervalTicks(TpsCollector.POLL_INTERVAL)
+                .submit(plugin);
     }
 
     @Override

@@ -1,11 +1,11 @@
 package de.sldk.mc.metrics.player;
 
-import org.bukkit.OfflinePlayer;
+import org.spongepowered.api.entity.living.player.User;
 
 import java.util.Map;
 
 public interface PlayerStatisticLoader {
 
-	Map<Enum<?>, Integer> getPlayerStatistics(OfflinePlayer offlinePlayer);
+    Map<Enum<?>, Integer> getPlayerStatistics(User offlinePlayer);
 
 }

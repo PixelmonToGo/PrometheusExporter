@@ -1,8 +1,8 @@
 package de.sldk.mc.metrics;
 
+import de.sldk.mc.PrometheusExporter;
 import io.prometheus.client.Gauge;
-import org.bukkit.World;
-import org.bukkit.plugin.Plugin;
+import org.spongepowered.api.world.World;
 
 public class PlayersOnlineTotal extends WorldMetric {
 
@@ -12,7 +12,7 @@ public class PlayersOnlineTotal extends WorldMetric {
             .labelNames("world")
             .create();
 
-    public PlayersOnlineTotal(Plugin plugin) {
+    public PlayersOnlineTotal(PrometheusExporter plugin) {
         super(plugin, PLAYERS_ONLINE);
     }
 
@@ -22,6 +22,6 @@ public class PlayersOnlineTotal extends WorldMetric {
 
     @Override
     protected void collect(World world) {
-        PLAYERS_ONLINE.labels(world.getName()).set(world.getPlayers().size());
+        PLAYERS_ONLINE.labels(world.getDimension().getType().getId()).set(world.getPlayers().size());
     }
 }

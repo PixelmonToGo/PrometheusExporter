@@ -1,10 +1,9 @@
 package de.sldk.mc.metrics;
 
-import java.util.Arrays;
-
-import org.bukkit.plugin.Plugin;
-
+import de.sldk.mc.PrometheusExporter;
 import io.prometheus.client.Gauge;
+
+import java.util.Arrays;
 
 public class TickDurationMedianCollector extends TickDurationCollector {
     private static final String NAME = "tick_duration_median";
@@ -14,7 +13,7 @@ public class TickDurationMedianCollector extends TickDurationCollector {
             .help("Median duration of server tick (nanoseconds)")
             .create();
 
-    public TickDurationMedianCollector(Plugin plugin) {
+    public TickDurationMedianCollector(PrometheusExporter plugin) {
         super(plugin, TD, NAME);
     }
 

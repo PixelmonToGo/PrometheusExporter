@@ -1,26 +1,25 @@
 package de.sldk.mc.metrics;
 
+import de.sldk.mc.PrometheusExporter;
 import io.prometheus.client.Collector;
 import io.prometheus.client.CollectorRegistry;
-import org.bukkit.plugin.Plugin;
-
-import java.util.logging.Logger;
+import org.slf4j.Logger;
 
 public abstract class Metric {
 
     private final static String COMMON_PREFIX = "mc_";
 
-    private final Plugin plugin;
+    private final PrometheusExporter plugin;
     private final Collector collector;
 
     private boolean enabled = false;
 
-    protected Metric(Plugin plugin, Collector collector) {
-        this.plugin = plugin;
+    protected Metric(PrometheusExporter plugin, Collector collector) {
         this.collector = collector;
+        this.plugin = plugin;
     }
 
-    protected Plugin getPlugin() {
+    public PrometheusExporter getPlugin() {
         return plugin;
     }
 
@@ -43,9 +42,7 @@ public abstract class Metric {
         final Logger log = plugin.getLogger();
         final String className = getClass().getSimpleName();
 
-        log.warning(String.format("Failed to collect metric '%s' (see FINER log for stacktrace): %s",
-                className, e.toString()));
-        log.throwing(className, "collect", e);
+        log.warn(String.format("Failed to collect metric '%s' (see FINER log for stacktrace)", className), e);
     }
 
     protected static String prefix(String name) {

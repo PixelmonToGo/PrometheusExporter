@@ -1,8 +1,8 @@
 package de.sldk.mc.metrics;
 
+import de.sldk.mc.PrometheusExporter;
 import io.prometheus.client.Gauge;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.plugin.Plugin;
+import org.spongepowered.api.entity.living.player.User;
 
 public class PlayerOnline extends PlayerMetric {
 
@@ -12,12 +12,12 @@ public class PlayerOnline extends PlayerMetric {
             .labelNames("name", "uid")
             .create();
 
-    public PlayerOnline(Plugin plugin) {
+    public PlayerOnline(PrometheusExporter plugin) {
         super(plugin, PLAYERS_WITH_NAMES);
     }
 
     @Override
-    public void collect(OfflinePlayer player) {
+    public void collect(User player) {
         PLAYERS_WITH_NAMES.labels(getNameOrUid(player), getUid(player)).set(player.isOnline() ? 1 : 0);
     }
 }
