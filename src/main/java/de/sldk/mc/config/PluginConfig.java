@@ -20,7 +20,9 @@ public class PluginConfig<T> {
     }
 
     public void setDefault(ConfigurationNode configurationNode) {
-        configurationNode.getNode((Object[]) this.key.split("\\.")).setValue(defaultValue);
+        if (configurationNode.getNode((Object[]) this.key.split("\\.")).getValue() == null) {
+            configurationNode.getNode((Object[]) this.key.split("\\.")).setValue(defaultValue);
+        }
     }
 
     public T get(ConfigurationNode config) {

@@ -64,14 +64,12 @@ public class PrometheusExporter {
         try {
             if (!config.exists()) {
                 config.createNewFile();
-
-                configurationNode = cfgMgr.load();
-                exporterConfig.loadDefaultsAndSave();
-
-                this.cfgMgr.save(configurationNode);
-            } else {
-                configurationNode = cfgMgr.load();
             }
+
+            configurationNode = cfgMgr.load();
+            exporterConfig.loadDefaultsAndSave();
+
+            this.cfgMgr.save(configurationNode);
 
             exporterConfig.enableConfiguredMetrics();
         } catch (Exception e) {
