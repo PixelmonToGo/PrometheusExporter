@@ -34,7 +34,7 @@ public class Tps extends Metric {
 
     private Task startTask(PrometheusExporter plugin) {
         return Task.builder()
-                .execute(this::doCollect)
+                .execute(tpsCollector)
                 .intervalTicks(TpsCollector.POLL_INTERVAL)
                 .submit(plugin);
     }
