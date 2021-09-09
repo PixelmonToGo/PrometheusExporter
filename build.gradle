@@ -1,40 +1,42 @@
 buildscript {
     repositories {
         jcenter()
-        mavenCentral()
         maven {
-            name = 'sponge'
-            url = 'http://repo.spongepowered.org/maven'
+            name = 'forge'
+            url = 'https://files.minecraftforge.net/maven'
         }
         maven {
-            name = "forge"
-            url = "https://maven.minecraftforge.net"
+            url = 'https://plugins.gradle.org/m2/'
         }
     }
-
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '4.+', changing: true
     }
 }
-
 
 
 plugins {
     id 'signing'
-    id 'com.github.johnrengelman.shadow' version '1.2.4'
-    id 'org.spongepowered.plugin' version '0.8.1'
+    id 'com.github.johnrengelman.shadow' version '2.0.4'
 }
 
-apply plugin: 'net.minecraftforge.gradle.forge'
+apply plugin: 'net.minecraftforge.gradle'
 
 minecraft {
-    mappings = 'snapshot_20171007'
-    runDir = "run"
-    version = "1.12.2-14.23.5.2838"
+    mappings channel: 'snapshot', version: '20180814-1.12'
 }
 
+repositories {
+    maven {
+        name = 'spongepowered-repo'
+        url = 'https://repo.spongepowered.org/maven'
+    }
+}
+
+sourceSets.main.resources { srcDir 'src/generated/resources' }
+
 group = 'org.stonebound.prometheusexporter'
-version = '2.0.0'
+version = '2.0.2-PTG'
 description = "Prometheus Exporter for Sponge"
 
 compileJava {
@@ -45,6 +47,7 @@ compileJava {
 defaultTasks 'build', 'shadowJar'
 
 dependencies {
+    minecraft 'net.minecraftforge:forge:1.12.2-14.23.5.2854'
     compile 'org.spongepowered:spongeapi:7.0.0'
     compile 'io.prometheus:simpleclient_common:0.10.0'
     compile 'io.prometheus:simpleclient_hotspot:0.10.0'
@@ -89,11 +92,3 @@ signing {
         sign configurations.shadow
     }
 }
-
-sponge {
-    plugin {
-        id = 'spongeprometheusexporter'
-    }
-}
-
-//tasks.signShadow.dependsOn retromapReplacedMain
