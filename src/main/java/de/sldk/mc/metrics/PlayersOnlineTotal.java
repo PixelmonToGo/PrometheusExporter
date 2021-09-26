@@ -2,9 +2,10 @@ package de.sldk.mc.metrics;
 
 import de.sldk.mc.PrometheusExporter;
 import io.prometheus.client.Gauge;
-import org.spongepowered.api.world.World;
+import net.minecraft.world.WorldServer;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 
-public class PlayersOnlineTotal extends WorldMetric {
+public class PlayersOnlineTotal extends Metric {
 
     private static final Gauge PLAYERS_ONLINE = Gauge.build()
             .name(prefix("players_online_total"))
@@ -17,11 +18,9 @@ public class PlayersOnlineTotal extends WorldMetric {
     }
 
     @Override
-    protected void clear() {
-    }
-
-    @Override
-    public void collect(World world) {
-        PLAYERS_ONLINE.labels(world.getDimension().getType().getId()).set(world.getPlayers().size());
+    protected void doCollect() {
+        for (WorldServer worldServer : FMLCommonHandler.instance().getMinecraftServerInstance().worlds) {
+            PLAYERS_ONLINE.labels(worldServer.getWorldInfo().getWorldName()).set(worldServer.playerEntities.size());
+        }
     }
 }
